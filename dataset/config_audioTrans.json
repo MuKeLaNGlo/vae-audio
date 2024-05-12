@@ -1,0 +1,41 @@
+{   
+    "name": "m64-5s",
+    "save_dir": "dataset/myAudioDataset/",
+    "dataset": {
+        "type": "CollectData",
+        "args": {
+            "path_to_dataset": ["dataset/myAudioDataset/audio"],
+            "extension": ["wav", "npy"]
+        }
+    },
+    "transform1": {
+        "type": "AudioRead",
+        "args": {
+            "sr": 22050,
+            "duration": 5
+        }
+    },
+    "transform2": {
+        "type": "PadAudio",
+        "args": {
+            "sr": 22050,
+            "pad_to": 5
+        }
+    },
+    "transform3": {
+        "type": "Zscore",
+        "args": {
+            "divide_sigma": false
+        }
+    },
+    "transform4": {
+        "type": "Spectrogram",
+        "args": {
+            "sr": 22050,
+            "n_fft": 2048,
+            "hop_size": 735,
+            "n_band": 64,
+            "spec_type": "mel"
+        }
+    }
+}
