@@ -58,6 +58,7 @@ class ConfigParser:
         instance initialized with corresponding keyword args given as 'args'.
         """
         module_cfg = self[name]
+        # print("ЖОПА", name, module, *args)
         return getattr(module, module_cfg['type'])(*args, **module_cfg['args'])
 
     def __getitem__(self, name):

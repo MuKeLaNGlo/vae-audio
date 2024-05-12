@@ -117,10 +117,12 @@ class SpecVAE(BaseVAE):
         self.input_size = input_size
         self.latent_dim = latent_dim
         self.is_featExtract = is_featExtract
-
-        self.n_freqBand, self.n_contextWin = input_size
+        print(input_size)
+        self.n_channel, self.n_freqBand, self.n_contextWin = input_size
 
         # Construct encoder and Gaussian layers
+        n_convChannel.pop(0)
+        print(n_convLayer, [self.n_freqBand] + n_convChannel, filter_size, stride)
         self.encoder = spec_conv1d(n_convLayer, [self.n_freqBand] + n_convChannel, filter_size, stride)
         self.flat_size, self.encoder_outputSize = self._infer_flat_size()
         self.encoder_fc = fc(n_fcLayer, [self.flat_size, *n_fcChannel], activation='tanh', batchNorm=True)
@@ -133,7 +135,8 @@ class SpecVAE(BaseVAE):
         self.decoder = spec_deconv1d(n_convLayer, [self.n_freqBand] + n_convChannel, filter_size, stride)
 
     def _infer_flat_size(self):
-        encoder_output = self.encoder(torch.ones(1, *self.input_size))
+        print(*self.input_size)
+        encoder_output = self.encoder(torch.ones(*self.input_size))
         return int(np.prod(encoder_output.size()[1:])), encoder_output.size()[1:]
 
     def encode(self, x):
